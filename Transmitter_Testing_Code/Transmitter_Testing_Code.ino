@@ -11,16 +11,9 @@ RF24 radio(9, 8); // CE, CSN
 const byte address[6] = "00001";
 
 // Max size of this struct is 32 bytes - NRF24L01 buffer limit
-struct Data_Package {
-  byte a = 0;
-  byte b = 125;
-  byte c = 255;
-  int d = 1024;
-  float e = 3.141592;
-  String f = "Test";
-};
+float data[2] = {0,0};
 
-Data_Package data; // Create a variable with the above structure
+//Data_Package data; // Create a variable with the above structure
 
 void setup() {
   radio.begin();
@@ -31,6 +24,9 @@ void setup() {
 
 void loop() {
   // Send the whole data from the structure to the receiver
-  radio.write(&data, sizeof(Data_Package));
-  delay(500);
+  data[0]++;
+  data[1]++;
+  
+  radio.write(data, sizeof(data));
+  //delay(500);
 }

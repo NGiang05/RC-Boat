@@ -22,8 +22,8 @@ const byte address[6] = "00001";
 
 // Max size of this struct is 32 bytes - NRF24L01 buffer limit
 struct Data_Package {
-    float leftX = 0.0;
-    float right = 0.0;
+    float leftX = Xbox.getAnalogHat(LeftHatX);
+    float right = Xbox.getButtonPress(RT);
 };
 
 Data_Package data; // Create a variable with the above structure
@@ -63,9 +63,9 @@ void loop() {
 
     Serial.print(F("RT: "));
     Serial.print(data.right);
-    Serial.print("\t");
+    Serial.print("\t\n");
 
     // sending the data from the structure to the receiver
     radio.write(&data, sizeof(Data_Package));
-    delay(100);
+    //delay(100);
 }
