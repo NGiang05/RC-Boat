@@ -8,8 +8,8 @@ const byte address[6] = "00001";
 
 // Max size of this struct is 32 bytes - NRF24L01 buffer limit
 struct Data_Package {
-    float leftX = 0.0;
-    float right = 0.0;
+    float leftX;
+    float right;
 };
 
 
@@ -27,10 +27,11 @@ void loop() {
   // Check whether there is data to be received
   if (radio.available()) {
     radio.read(&data, sizeof(Data_Package)); // Read the whole data and store it into the 'data' structure
-  }
-  Serial.print("leftX: ");
+    Serial.print("leftX: ");
   Serial.print(data.leftX);
   Serial.print("\tright: ");
   Serial.print(data.right);
   Serial.println();
+  }
+  
 }
