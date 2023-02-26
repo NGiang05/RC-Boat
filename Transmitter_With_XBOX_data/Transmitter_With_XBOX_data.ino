@@ -21,12 +21,7 @@ RF24 radio(9, 8); // CE, CSN
 const byte address[6] = "00001";
 
 // Max size of this struct is 32 bytes - NRF24L01 buffer limit
-struct Data_Package {
-    float leftX = Xbox.getAnalogHat(LeftHatX);
-    float right = Xbox.getButtonPress(RT);
-};
-
-Data_Package data; // Create a variable with the above structure
+float data[2];
 
 void setup() {
     radio.begin();
@@ -47,22 +42,22 @@ void setup() {
 void loop() {
     Usb.Task();
     if (Xbox.XboxOneConnected) {
-        if (Xbox.getAnalogHat(LeftHatX) > 7500 || Xbox.getAnalogHat(LeftHatX) < -7500) {
-            data.leftX = Xbox.getAnalogHat(LeftHatX);
+        if (Xbox.getAnalogHat(LeftHatX) < -7500 || Xbox.getAnalogHat(LeftHatX) > 7500) {
+            data[0] = Xbox.getAnalogHat(LeftHatX);
         } else {
-            data.leftX = 0.0;
+            data[0] = 0.0;
         }
 
-        data.right = Xbox.getButtonPress(RT);
+        data[1] = Xbox.getButtonPress(RT); 
     }
     
 
     Serial.print(F("LeftX: "));
-    Serial.print(data.leftX);
+    Serial.print(data[0]);
     Serial.print("\t");
 
     Serial.print(F("RT: "));
-    Serial.print(data.right);
+    Serial.print(data[1]);
     Serial.print("\t\n");
 
     // sending the data from the structure to the receiver
