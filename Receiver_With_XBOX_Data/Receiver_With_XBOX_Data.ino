@@ -23,7 +23,7 @@ void loop() {
     radio.read(data, sizeof(data)); // Read the whole data and store it into the 'data' structure
     Serial.print("a: ");
     Serial.print(data[0]);
-    Serial.print("b: ");
+    Serial.print("\tb: ");
     Serial.println(data[1]);
   }
 }

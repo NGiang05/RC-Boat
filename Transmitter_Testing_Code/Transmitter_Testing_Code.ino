@@ -20,12 +20,15 @@ void setup() {
   radio.openWritingPipe(address);
   radio.setPALevel(RF24_PA_MIN);
   radio.stopListening();
+  Serial.begin(9600);
 }
 
 void loop() {
   // Send the whole data from the structure to the receiver
   data[0]++;
-  data[1]++;
+  data[1] = analogRead(A0);
+
+  Serial.println(data[1]); 
   
   radio.write(data, sizeof(data));
   //delay(500);
