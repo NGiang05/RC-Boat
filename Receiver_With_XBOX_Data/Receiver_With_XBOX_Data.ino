@@ -26,4 +26,5 @@ void loop() {
     Serial.print("\tb: ");
     Serial.println(data[1]);
   }
+  //Serial.println(radio.available());
 }

@@ -1,10 +1,12 @@
 // Link to tutorial: https://lastminuteengineers.com/nrf24l01-arduino-wireless-communication/
 //https://howtomechatronics.com/tutorials/arduino/arduino-wireless-communication-nrf24l01-tutorial/
 
-
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
+
+#define joyX1 A0
+#define joyY2 A1
 
 RF24 radio(9, 8); // CE, CSN
 
@@ -25,9 +27,11 @@ void setup() {
 
 void loop() {
   // Send the whole data from the structure to the receiver
-  data[0]++;
-  data[1] = analogRead(A0);
+  data[0] = analogRead(joyX1);
+  data[1] = analogRead(joyY2);
 
+  Serial.print(data[0]); 
+  Serial.print("\t"); 
   Serial.println(data[1]); 
   
   radio.write(data, sizeof(data));
