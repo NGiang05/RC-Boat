@@ -1,19 +1,28 @@
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
+#include <Servo.h>
 
 RF24 radio(9, 8); // CE, CSN
 
-int en = 3;
-int in1 = 4;
-int in2 = 5;
+const int en = 3;
+const int in1 = 4;
+const int in2 = 5;
+
+const int servoPin = 6;
+int servo; 
+int motor; 
+
+Servo myservo;
 
 const byte address[6] = "00001";
 
 // Max size of this struct is 32 bytes - NRF24L01 buffer limit
-float data[2];
+float data[2]; // first index is for the servo and the second index is for the motor
 
 void setup() {
+  myservo.attach(servoPin); 
+
   pinMode(en, OUTPUT);
   pinMode(in1, OUTPUT);
   pinMode(in2, OUTPUT);
@@ -39,16 +48,18 @@ void loop() {
     Serial.print("b: ");
     Serial.println(data[1]);
   }
-  /*
-  //PWM outputs for speed are from 0 to 255
-  if (speedControl == 0) { speedControl = 255;}
-  analogWrite(en, speedControl);
-  speedControl--; 
+  
+  servo = map(data[0], 0, 1023, 180, 0);
+  motor = map(data[1], 0, 1023, -255, 255); 
 
-  //set direction = clockwise
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-
-  delay(10);
-  */
+  if (motor < 0) { // PWM outputs for speed are from 0 to 255
+    analogWrite(en, motor * -1); 
+    digitalWrite(in1, LOW); 
+    digitalWrite(in2, HIGH);
+  } else {
+    analogWrite(en, motor);  
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+  }
+  myservo.write(servo);
 }
