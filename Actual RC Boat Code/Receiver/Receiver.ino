@@ -49,7 +49,7 @@ void loop() {
     Serial.println(data[1]);
   }
   
-  servo = map(data[0], 0, 1023, 180, 0);
+  servo = map(data[0], 0, 1023, 0, 180);
   motor = map(data[1], 0, 1023, -255, 255); 
 
   if (motor < 0) { // PWM outputs for speed are from 0 to 255
